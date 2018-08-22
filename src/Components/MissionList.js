@@ -1,0 +1,46 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import Mission from "./Mission";
+import './MissionList.css';
+import {DropTarget} from "react-dnd/lib/index";
+import {Types} from "../DragTypes";
+
+
+const missionTarget = {
+    drop(targetProps, monitor) {
+        const { id, statusId, refreshId} = monitor.getItem();
+        targetProps.onDrop(id, statusId, refreshId);
+    }
+}
+
+const propTypes = {
+    missions: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        description: PropTypes.string
+    })),
+    statusName : PropTypes.string.isRequired,
+}
+
+const MissionList = (props) => {
+    const { connectDropTarget } = props;
+    return connectDropTarget(
+        <div className='mission-list'>
+            <div className='mission-list-title'>{props.statusName}</div>
+            {props.missions.map(mission =>
+                <Mission
+                    key={mission.id}
+                    {...mission}
+                />
+            )}
+        </div>
+    );
+}
+
+MissionList.propTypes = propTypes;
+
+const collect = (connect) => ({
+    connectDropTarget: connect.dropTarget()
+})
+
+export default DropTarget(Types.mission, missionTarget, collect)(MissionList);

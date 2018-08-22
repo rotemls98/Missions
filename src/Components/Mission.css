@@ -1,0 +1,26 @@
+
+.mission {
+    margin: 16px;
+}
+
+.mission-title {
+    margin-bottom: 8px;
+    padding: 8px;
+}
+
+.mission-description {
+    padding: 8px;
+    color: rgba(158, 158, 158, 0.81);
+}
+
+.done {
+    background-color: #86f11c;
+}
+
+.waiting {
+    background-color: #f12929;
+}
+
+.working {
+    background-color: #e6e606c2;
+}

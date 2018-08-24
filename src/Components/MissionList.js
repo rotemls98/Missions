@@ -11,7 +11,7 @@ const missionTarget = {
         const { id, statusId, refreshId} = monitor.getItem();
         targetProps.onDrop(id, statusId, refreshId);
     }
-}
+};
 
 const propTypes = {
     missions: PropTypes.arrayOf(PropTypes.shape({
@@ -20,16 +20,19 @@ const propTypes = {
         description: PropTypes.string
     })),
     statusName : PropTypes.string.isRequired,
-}
+    onArrowClick : PropTypes.func.isRequired,
+};
 
 const MissionList = (props) => {
     const { connectDropTarget } = props;
     return connectDropTarget(
         <div className='mission-list'>
             <div className='mission-list-title'>{props.statusName}</div>
-            {props.missions.map(mission =>
+            {props.missions.map((mission, index) =>
                 <Mission
                     key={mission.id}
+                    showArrow={Boolean(index)}
+                    onArrowClick={props.onArrowClick}
                     {...mission}
                 />
             )}
@@ -41,6 +44,6 @@ MissionList.propTypes = propTypes;
 
 const collect = (connect) => ({
     connectDropTarget: connect.dropTarget()
-})
+});
 
 export default DropTarget(Types.mission, missionTarget, collect)(MissionList);

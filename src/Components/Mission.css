@@ -1,11 +1,11 @@
 
 .mission {
-    margin: 16px;
+    font-family: cursive;
+    margin: 8px;
 }
 
 .mission-title {
     margin-bottom: 8px;
-    padding: 8px;
 }
 
 .mission-description {
@@ -23,4 +23,18 @@
 
 .working {
     background-color: #e6e606c2;
+}
+
+.mission-header {
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.arrow-invisible {
+    display: none;
+}
+
+.arrow {
+    font-size: 16px;
 }

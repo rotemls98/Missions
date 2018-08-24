@@ -1,13 +1,12 @@
 import React, {Component, Fragment} from 'react';
-import PropTypes from 'prop-types';
 import MissionListContainer from "./MissionListContainer";
 import {connect} from 'react-redux';
 import uuidv4 from 'uuid';
 import {refreshComponents, refreshComponent} from "../actions/actions";
 import {addMission} from "../Manager/MissionManager";
+import AddMissionDialog from "./AddMissionDialog";
 
 
-const propTypes = {};
 
 class MissionsInStatuses extends Component {
 
@@ -18,25 +17,33 @@ class MissionsInStatuses extends Component {
             waiting: uuidv4(),
             working: uuidv4(),
             done: uuidv4(),
-        }
+        };
+
+        this.state = {
+            open : false
+        };
 
         this.handleAddMission = this.handleAddMission.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     // suppose to be in RefreshChildHOC
-
-
-
     handleDropRefresh(sourceRefreshId, targetRefreshId) {
         this.props.dispatch(refreshComponents(sourceRefreshId, targetRefreshId));
     }
 
     handleAddMission() {
-        const title = "אין אש בלי עשן";
-        const description = "no fire without smoke";
+        const title = "barbie";
+        const description = "loves to play";
+
         const mission = { title, description};
         addMission(mission).then(() =>
             this.props.dispatch(refreshComponent(this.refreshIds.waiting)));
+        // this.setState({open : true});
+    }
+
+    handleClose() {
+        this.setState({open : false});
     }
 
     render() {
@@ -58,11 +65,14 @@ class MissionsInStatuses extends Component {
                     refreshId={refreshIds.waiting}
                     statusId={1}
                     statusName='waiting'/>
+                <AddMissionDialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                />
             </Fragment>
         );
     }
 }
 
-MissionsInStatuses.propTypes = propTypes;
 
 export default connect()(MissionsInStatuses);

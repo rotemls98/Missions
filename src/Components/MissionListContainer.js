@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import MissionList from "./MissionList";
-import {getMissions, updateMissionStatus} from "../Manager/MissionManager";
+import {fetchMissions, moveMissionUp, updateMissionStatus} from "../Manager/MissionManager";
 import withRefreshChild from "./withRefreshChild";
 
 const propTypes = {
@@ -16,13 +16,24 @@ const propTypes = {
 
 
 class MissionListContainer extends Component {
-    state = {
-        missions: []
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            missions: []
+        };
+
+        this.getMissions = this.getMissions.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
+    }
 
 
     componentDidMount() {
-        getMissions(this.props.statusId).then(missions => this.setState({missions}));
+        this.getMissions();
+    }
+
+    getMissions() {
+        fetchMissions(this.props.statusId).then(missions => this.setState({missions}));
     }
 
     handleDrop(missionId, missionStatusId, sourceMissionRefreshId) {
@@ -33,12 +44,17 @@ class MissionListContainer extends Component {
         }
     }
 
+    handleArrowClick(id) {
+        moveMissionUp(id).then(this.getMissions);
+    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.timestamp !== this.props.timestamp) {
-            getMissions(this.props.statusId).then(missions => this.setState({missions}));
+            this.getMissions();
         }
     }
+
+
 
 
     render() {
@@ -47,7 +63,8 @@ class MissionListContainer extends Component {
                 refreshId={this.props.refreshId}
                 missions={this.state.missions}
                 statusName={this.props.statusName}
-                onDrop={(missionId, currentStatusId, refreshId) => this.handleDrop(missionId, currentStatusId, refreshId)}
+                onDrop={this.handleDrop}
+                onArrowClick={(id) => this.handleArrowClick(id)}
             />
         )
     };

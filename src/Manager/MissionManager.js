@@ -6,15 +6,15 @@ function delay(t, v) {
     });
 }
 
-export const getMissions = (filterId) =>  {
+export const fetchMissions = (filterId) =>  {
     return fetch(`${BASE_URL}?filterId=${filterId}`).then(res => res.json());
-}
+};
 
 export const updateMissionStatus = (id, statusId) => {
     return fetch(`${BASE_URL}/${id}/?statusId=${statusId}`, {
         method : 'PUT'
     });
-}
+};
 
 export const addMission = (mission) => {
     return fetch(`${BASE_URL}`, {
@@ -24,4 +24,10 @@ export const addMission = (mission) => {
         },
         body: JSON.stringify(mission)
     });
-}
+};
+
+export const moveMissionUp = (id) => {
+    return fetch(`${BASE_URL}/upward/${id}`, {
+        method : 'PUT'
+    });
+};

@@ -2,7 +2,7 @@ import React, {Component } from 'react';
 import PropTypes from 'prop-types';
 import {DragSource} from 'react-dnd';
 import {Types} from "../DragTypes";
-import withRefreshId from "./withRefreshId";
+import withRefreshId from "../common/hoc/withRefreshId";
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import './Mission.css';
 import {withStyles} from "@material-ui/core";
@@ -23,12 +23,11 @@ const propTypes = {
     onArrowClick : PropTypes.func.isRequired,
     showArrow : PropTypes.bool.isRequired,
 
-
     // from withStyles HOC
-    classes : PropTypes.object,
+    classes : PropTypes.object.isRequired,
 
-    // from refresh
-    refreshId: PropTypes.string
+    // injected from withRefreshId
+    refreshId: PropTypes.string.isRequired
 };
 
 const styles = {
@@ -38,7 +37,6 @@ const styles = {
 };
 
 class Mission extends Component {
-
     constructor(props) {
         super(props);
 
@@ -64,6 +62,7 @@ class Mission extends Component {
         this.setState({hover : false});
     }
 
+    // ugly
     getColorClassName() {
         const {statusId} = this.props;
         if (statusId === 1) {
@@ -105,7 +104,7 @@ class Mission extends Component {
 
 Mission.propTypes = propTypes;
 
-const collect = (connect, monitor) => ({
+const collect = (connect) => ({
     connectDragSource: connect.dragSource()
 });
 

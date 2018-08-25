@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {addComponent, refreshComponents, removeComponent} from "../actions/actions";
-import uuidv4 from 'uuid';
+import {addComponent, refreshComponents, removeComponent} from "../../actions/actions";
 
 export const RefreshIdContext = React.createContext('refreshId');
 
-function withRefreshChild(WrappedComponent) {
+function withRefresh(WrappedComponent) {
     return connect(mapRefreshStateToProps, mapDispatchToProps)(
         class extends Component {
 
@@ -43,24 +41,23 @@ function withRefreshChild(WrappedComponent) {
 
 export const refreshSelector = (refreshState, ownProps) => {
     return refreshState.find(refresh => refresh.id === ownProps.refreshId);
-}
+};
 
 export const mapRefreshStateToProps = (state, ownProps) => {
     const refreshData = refreshSelector(state, ownProps);
     return {
         timestamp: refreshData ? refreshData.timestamp : undefined
     }
-}
-
+};
 
 export const mapDispatchToProps = (dispatch) => ({
     addComponent: (id) => dispatch(addComponent(id)),
     refreshComponents: (...componentsToRefresh) =>
         dispatch(refreshComponents(...componentsToRefresh)),
     removeComponent: (id) => removeComponent(id),
-})
+});
 
-export default withRefreshChild;
+export default withRefresh;
 
 
 

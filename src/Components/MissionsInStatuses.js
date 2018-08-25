@@ -2,14 +2,11 @@ import React, {Component, Fragment} from 'react';
 import MissionListContainer from "./MissionListContainer";
 import {connect} from 'react-redux';
 import uuidv4 from 'uuid';
-import {refreshComponents, refreshComponent} from "../actions/actions";
+import {refreshComponent} from "../actions/actions";
 import {addMission} from "../Manager/MissionManager";
 import AddMissionDialog from "./AddMissionDialog";
 
-
-
 class MissionsInStatuses extends Component {
-
     constructor(props) {
         super(props);
 
@@ -25,21 +22,18 @@ class MissionsInStatuses extends Component {
 
         this.handleAddMission = this.handleAddMission.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
     }
 
-    // suppose to be in RefreshChildHOC
-    handleDropRefresh(sourceRefreshId, targetRefreshId) {
-        this.props.dispatch(refreshComponents(sourceRefreshId, targetRefreshId));
-    }
-
-    handleAddMission() {
-        const title = "barbie";
-        const description = "loves to play";
-
+    handleAddMission(title, description) {
         const mission = { title, description};
         addMission(mission).then(() =>
-            this.props.dispatch(refreshComponent(this.refreshIds.waiting)));
-        // this.setState({open : true});
+            this.props.refreshComponent(this.refreshIds.waiting));
+        this.handleClose();
+    }
+
+    handleOpen() {
+        this.setState({open : true});
     }
 
     handleClose() {
@@ -50,7 +44,7 @@ class MissionsInStatuses extends Component {
         const {refreshIds} = this;
         return (
             <Fragment>
-                <button onClick={this.handleAddMission}>Add Mission</button>
+                <button onClick={this.handleOpen}>Add Mission</button>
                 <MissionListContainer
                     refreshId={refreshIds.done}
                     statusId={3}
@@ -68,11 +62,15 @@ class MissionsInStatuses extends Component {
                 <AddMissionDialog
                     open={this.state.open}
                     onClose={this.handleClose}
+                    onSubmit={this.handleAddMission}
                 />
             </Fragment>
         );
     }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+    refreshComponent : (refreshId) => dispatch(refreshComponent(refreshId))
+});
 
-export default connect()(MissionsInStatuses);
+export default connect(null,mapDispatchToProps)(MissionsInStatuses);

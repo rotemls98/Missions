@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import MissionList from "./MissionList";
 import {fetchMissions, moveMissionUp, updateMissionStatus} from "../Manager/MissionManager";
-import withRefreshChild from "./withRefreshChild";
+import withRefresh from "../common/hoc/withRefresh";
 
 const propTypes = {
     statusId: PropTypes.number.isRequired,
@@ -14,17 +14,17 @@ const propTypes = {
     refreshComponents : PropTypes.func
 };
 
-
 class MissionListContainer extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            missions: []
+            missions: [],
         };
 
         this.getMissions = this.getMissions.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
+        this.handleArrowClick = this.handleArrowClick.bind(this);
     }
 
 
@@ -54,9 +54,6 @@ class MissionListContainer extends Component {
         }
     }
 
-
-
-
     render() {
         return (
             <MissionList
@@ -64,18 +61,13 @@ class MissionListContainer extends Component {
                 missions={this.state.missions}
                 statusName={this.props.statusName}
                 onDrop={this.handleDrop}
-                onArrowClick={(id) => this.handleArrowClick(id)}
+                onArrowClick={this.handleArrowClick}
             />
         )
     };
 }
 
-
 MissionListContainer.propTypes = propTypes;
 
-
-
-
-
-export default withRefreshChild(MissionListContainer);
+export default withRefresh(MissionListContainer);
 

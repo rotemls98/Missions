@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { RefreshIdContext} from './withRefresh';
+import {RefreshIdContext} from './withRefresh';
 
 
 function withRefreshId(WrappedComponent) {
@@ -7,11 +7,13 @@ function withRefreshId(WrappedComponent) {
         render() {
             return (
                 <RefreshIdContext.Consumer>
-                    { refreshId =>
-                        <WrappedComponent
-                            refreshId={refreshId}
-                            {...this.props}
-                        />
+                    {refreshId =>
+                        React.Children.only(
+                            <WrappedComponent
+                                refreshId={refreshId}
+                                {...this.props}
+                            />
+                        )
                     }
                 </RefreshIdContext.Consumer>
             )

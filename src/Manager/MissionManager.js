@@ -16,6 +16,16 @@ export const updateMissionStatus = (id, statusId) => {
     });
 };
 
+export const editMission = (id, mission) => {
+    return fetch(`${BASE_URL}/edit/${id}`, {
+        method : 'PUT',
+        headers: {
+            'content-type' : 'Application/json'
+        },
+        body: JSON.stringify({mission})
+    });
+};
+
 export const addMission = (mission) => {
     return fetch(`${BASE_URL}`, {
         method : 'POST',

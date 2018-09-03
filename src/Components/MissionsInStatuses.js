@@ -5,6 +5,7 @@ import uuidv4 from 'uuid';
 import {refreshComponent} from "../actions/actions";
 import {addMission} from "../Manager/MissionManager";
 import AddMissionDialog from "./AddMissionDialog";
+import DialogForm from "../common/Dialog/DialogForm";
 
 class MissionsInStatuses extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class MissionsInStatuses extends Component {
         };
 
         this.state = {
-            open : false
+            open: false
         };
 
         this.handleAddMission = this.handleAddMission.bind(this);
@@ -26,25 +27,29 @@ class MissionsInStatuses extends Component {
     }
 
     handleAddMission(title, description) {
-        const mission = { title, description};
+        const mission = {title, description};
         addMission(mission).then(() =>
             this.props.refreshComponent(this.refreshIds.waiting));
         this.handleClose();
     }
 
+    handleMissionClick() {
+
+    }
+
     handleOpen() {
-        this.setState({open : true});
+        this.setState({open: true});
     }
 
     handleClose() {
-        this.setState({open : false});
+        this.setState({open: false});
     }
 
     render() {
         const {refreshIds} = this;
         return (
             <Fragment>
-                <button onClick={this.handleOpen}>Add Mission</button>
+                <button data-test-id="add-button" onClick={this.handleOpen}>Add Mission</button>
                 <MissionListContainer
                     refreshId={refreshIds.done}
                     statusId={3}
@@ -70,7 +75,7 @@ class MissionsInStatuses extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    refreshComponent : (refreshId) => dispatch(refreshComponent(refreshId))
+    refreshComponent: (refreshId) => dispatch(refreshComponent(refreshId))
 });
 
-export default connect(null,mapDispatchToProps)(MissionsInStatuses);
+export default connect(null, mapDispatchToProps)(MissionsInStatuses);

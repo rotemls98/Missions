@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {addComponent, refreshComponents, removeComponent} from "../../actions/actions";
+import {getRefresh} from "../../App";
 
 export const RefreshIdContext = React.createContext('refreshId');
 
@@ -12,7 +14,7 @@ function withRefresh(WrappedComponent) {
                 super(props);
 
                 if (!props.refreshId) {
-                    throw Error("refresh id must be specifed");
+                    throw Error("refresh id must be specified");
                 }
             }
 
@@ -28,10 +30,12 @@ function withRefresh(WrappedComponent) {
                 const {refreshId} = this.props;
                 return (
                     <RefreshIdContext.Provider value={refreshId}>
-                        <WrappedComponent
-                            refreshId={refreshId}
-                            {...this.props}
-                        />
+                        {React.Children.only(
+                            <WrappedComponent
+                                refreshId={refreshId}
+                                {...this.props}
+                            />
+                        )}
                     </RefreshIdContext.Provider>
                 )
             }
@@ -39,23 +43,22 @@ function withRefresh(WrappedComponent) {
         })
 }
 
-export const refreshSelector = (refreshState, ownProps) => {
-    return refreshState.find(refresh => refresh.id === ownProps.refreshId);
-};
 
-export const mapRefreshStateToProps = (state, ownProps) => {
-    const refreshData = refreshSelector(state, ownProps);
+export const mapRefreshStateToProps = (state, {refreshId}) => {
+    const refreshData = getRefresh(state, refreshId);
     return {
         timestamp: refreshData ? refreshData.timestamp : undefined
     }
 };
 
-export const mapDispatchToProps = (dispatch) => ({
-    addComponent: (id) => dispatch(addComponent(id)),
-    refreshComponents: (...componentsToRefresh) =>
-        dispatch(refreshComponents(...componentsToRefresh)),
-    removeComponent: (id) => removeComponent(id),
-});
+export const mapDispatchToProps = (dispatch) => bindActionCreators(
+    {
+        addComponent,
+        refreshComponents,
+        removeComponent,
+    },
+    dispatch
+);
 
 export default withRefresh;
 

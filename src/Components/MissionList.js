@@ -4,6 +4,7 @@ import Mission from "./Mission";
 import './MissionList.css';
 import {DropTarget} from "react-dnd/lib/index";
 import {Types} from "../DragTypes";
+import {CircularProgress} from "@material-ui/core";
 
 
 const missionTarget = {
@@ -36,6 +37,7 @@ const MissionList = (props) => {
                     {...mission}
                 />
             )}
+            {/*<CircularProgress color='primary'/>*/}
         </div>
     );
 }

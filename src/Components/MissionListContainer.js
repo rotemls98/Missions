@@ -11,7 +11,7 @@ const propTypes = {
     // from refresh HOC and Redux
     refreshId: PropTypes.string,
     timestamp: PropTypes.number,
-    refreshComponents : PropTypes.func
+    refreshComponents: PropTypes.func
 };
 
 class MissionListContainer extends Component {

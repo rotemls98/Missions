@@ -21,12 +21,17 @@ const refresh = (state = [], action) => {
                     return {...item, timestamp: action.timestamp}
                 }
                 return item;
-            })
+            });
         case 'REMOVE_COMPONENT':
             return state.filter(item => item.id !== action.id);
         default :
             return state;
     }
-}
+};
 
 export default refresh
+
+
+export const getRefresh = (refreshState, refreshId) => {
+    return refreshState.find(refresh => refresh.id === refreshId);
+};

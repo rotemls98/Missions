@@ -86,7 +86,7 @@ class Mission extends Component {
                 onMouseLeave={this.handleMouseLeave}
             >
                 <div className='mission-header'>
-                    <div className='mission-title'>{title}</div>
+                    <div id='mission-title' className='mission-title'>{title}</div>
                     <div className={!showArrow || !hover ? 'arrow-invisible' : ''}>
                         <ArrowUpwardIcon
                             classes={{root : classes.root}}
@@ -94,7 +94,7 @@ class Mission extends Component {
                         />
                     </div>
                 </div>
-                <div className='mission-description'>{description}</div>
+                <div id='mission-description' className='mission-description'>{description}</div>
             </div>
         );
     }

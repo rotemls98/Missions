@@ -4,8 +4,7 @@ import Mission from "./Mission";
 import './MissionList.css';
 import {DropTarget} from "react-dnd/lib/index";
 import {Types} from "../DragTypes";
-import {CircularProgress} from "@material-ui/core";
-
+// import {CircularProgress} from "@material-ui/core";
 
 const missionTarget = {
     drop(targetProps, monitor) {
@@ -22,6 +21,7 @@ const propTypes = {
     })),
     statusName : PropTypes.string.isRequired,
     onArrowClick : PropTypes.func.isRequired,
+    onMissionClick: PropTypes.func.isRequired,
 };
 
 const MissionList = (props) => {
@@ -34,13 +34,14 @@ const MissionList = (props) => {
                     key={mission.id}
                     showArrow={Boolean(index)}
                     onArrowClick={props.onArrowClick}
+                    onMissionClick={props.onMissionClick}
                     {...mission}
                 />
             )}
             {/*<CircularProgress color='primary'/>*/}
         </div>
     );
-}
+};
 
 MissionList.propTypes = propTypes;
 

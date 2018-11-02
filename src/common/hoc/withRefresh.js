@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
+import {bindActionCreators, compose} from 'redux';
 import {connect} from 'react-redux';
 import {addComponent, refreshComponents, removeComponent} from "../../actions/actions";
 import {getRefresh} from "../../App";
@@ -7,9 +7,7 @@ import {getRefresh} from "../../App";
 export const RefreshIdContext = React.createContext('refreshId');
 
 function withRefresh(WrappedComponent) {
-    return connect(mapRefreshStateToProps, mapDispatchToProps)(
-        class extends Component {
-
+    return class extends Component {
             constructor(props) {
                 super(props);
 
@@ -39,12 +37,11 @@ function withRefresh(WrappedComponent) {
                     </RefreshIdContext.Provider>
                 )
             }
-
-        })
+        };
 }
 
 
-export const mapRefreshStateToProps = (state, {refreshId}) => {
+export const mapStateToProps = (state, {refreshId}) => {
     const refreshData = getRefresh(state, refreshId);
     return {
         timestamp: refreshData ? refreshData.timestamp : undefined
@@ -60,7 +57,12 @@ export const mapDispatchToProps = (dispatch) => bindActionCreators(
     dispatch
 );
 
-export default withRefresh;
+const refresh = compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withRefresh
+);
+
+export default refresh;
 
 
 

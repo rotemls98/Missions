@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {reduxForm, Field} from 'redux-form';
 import {Dialog, DialogTitle, DialogActions, DialogContent, Button, TextField} from '@material-ui/core';
 import {Zoom} from '@material-ui/core'
-import * as ReactDOM from "react-dom";
-import DialogForm from "../common/Dialog/DialogForm";
 
 const propTypes = {
-    // onClose: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    initialValues : PropTypes.object
 };
 
 const validate = values => {
@@ -38,7 +38,7 @@ const renderTextField = ({
     />
 };
 
-class AddMissionDialog extends Component {
+class EditMissionDialog extends Component {
 
     constructor(props) {
         super(props);
@@ -46,8 +46,10 @@ class AddMissionDialog extends Component {
         this.handleExited = this.handleExited.bind(this);
     }
 
+
     handleExited() {
         // set timeout is required so the method will be called after all fields are unregistered
+        this.props.onExited();
         setTimeout(() => {
             this.props.initialize(1); // value need to be different from initial
             this.props.destroy();
@@ -56,17 +58,16 @@ class AddMissionDialog extends Component {
 
 
     render() {
-        const {invalid, handleSubmit, onClose} = this.props;
+        const {open, invalid, handleSubmit, onClose, pristine} = this.props;
         return (
             <Dialog
-                onClose={onClose}
                 onExited={this.handleExited}
                 transitionDuration={400}
                 TransitionComponent={Zoom}
                 disableBackdropClick
-                open={this.props.open}
+                open={open}
             >
-                <DialogTitle style={{backgroundColor: '#3e3e7d'}}>Add Mission</DialogTitle>
+                <DialogTitle style={{backgroundColor: '#3e3e7d'}}>Edit Mission</DialogTitle>
                 <DialogContent>
                     <Field
                         fullWidth
@@ -95,9 +96,9 @@ class AddMissionDialog extends Component {
                         id='submit'
                         onClick={handleSubmit}
                         color="primary"
-                        disabled={invalid}
+                        disabled={invalid || pristine}
                     >
-                        Add
+                        Edit
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -106,13 +107,14 @@ class AddMissionDialog extends Component {
 }
 
 
-AddMissionDialog.propTypes = propTypes;
+EditMissionDialog.propTypes = propTypes;
 
 
 export default reduxForm({
-    form: 'AddMission',
+    form: 'EditMission',
+    enableReinitialize: true,
     validate,
-})(AddMissionDialog);
+})(EditMissionDialog);
 
 
 

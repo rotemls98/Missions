@@ -2,6 +2,7 @@
 .mission {
     font-family: cursive;
     margin: 8px;
+    cursor: pointer;
 }
 
 .mission-title {

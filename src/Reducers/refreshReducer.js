@@ -1,6 +1,8 @@
+import {ADD_COMPONENT, REFRESH_COMPONENT, REFRESH_COMPONENTS, REMOVE_COMPONENT,} from "../actions/ActionNames"
+
 const refresh = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_COMPONENT':
+        case ADD_COMPONENT:
             return [
                 ...state,
                 {
@@ -8,13 +10,13 @@ const refresh = (state = [], action) => {
                     timestamp: action.timestamp
                 }
             ];
-        case 'REFRESH_COMPONENT':
+        case REFRESH_COMPONENT:
             return state.map(item =>
                 (item.id === action.id)
                     ? {...item, timestamp: action.timestamp}
                     : item
             );
-        case 'REFRESH_COMPONENTS':
+        case REFRESH_COMPONENTS:
             return state.map(item => {
                 const itemToRefresh = action.ids.find(id => item.id === id);
                 if (itemToRefresh) {
@@ -22,14 +24,14 @@ const refresh = (state = [], action) => {
                 }
                 return item;
             });
-        case 'REMOVE_COMPONENT':
+        case REMOVE_COMPONENT:
             return state.filter(item => item.id !== action.id);
         default :
             return state;
     }
 };
 
-export default refresh
+export default refresh;
 
 
 export const getRefresh = (refreshState, refreshId) => {

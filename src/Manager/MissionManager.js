@@ -22,7 +22,7 @@ export const editMission = (id, mission) => {
         headers: {
             'content-type' : 'Application/json'
         },
-        body: JSON.stringify({mission})
+        body: JSON.stringify(mission)
     });
 };
 
@@ -40,4 +40,8 @@ export const moveMissionUp = (id) => {
     return fetch(`${BASE_URL}/upward/${id}`, {
         method : 'PUT'
     });
+};
+
+export const getMission = (id) => {
+    return fetch(`${BASE_URL}/${id}`).then(res => res.json());
 };

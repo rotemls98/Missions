@@ -7,6 +7,7 @@ import withRefresh from "../common/hoc/withRefresh";
 const propTypes = {
     statusId: PropTypes.number.isRequired,
     statusName: PropTypes.string.isRequired,
+    onMissionClick: PropTypes.func.isRequired,
 
     // from refresh HOC and Redux
     refreshId: PropTypes.string,
@@ -26,7 +27,6 @@ class MissionListContainer extends Component {
         this.handleDrop = this.handleDrop.bind(this);
         this.handleArrowClick = this.handleArrowClick.bind(this);
     }
-
 
     componentDidMount() {
         this.getMissions();
@@ -57,6 +57,7 @@ class MissionListContainer extends Component {
     render() {
         return (
             <MissionList
+                onMissionClick={this.props.onMissionClick}
                 refreshId={this.props.refreshId}
                 missions={this.state.missions}
                 statusName={this.props.statusName}

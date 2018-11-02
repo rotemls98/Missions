@@ -3,9 +3,11 @@ import MissionListContainer from "./MissionListContainer";
 import {connect} from 'react-redux';
 import uuidv4 from 'uuid';
 import {refreshComponent} from "../actions/actions";
-import {addMission} from "../Manager/MissionManager";
+import {addMission, editMission} from "../Manager/MissionManager";
 import AddMissionDialog from "./AddMissionDialog";
 import DialogForm from "../common/Dialog/DialogForm";
+import EditMissionDialogContainer from "./EditMissionDialogContainer";
+import EditMissionDialog from "./EditMissionDialog";
 
 class MissionsInStatuses extends Component {
     constructor(props) {
@@ -18,56 +20,90 @@ class MissionsInStatuses extends Component {
         };
 
         this.state = {
-            open: false
+            addDialogOpen: false,
+            editMissionId: null,
+            editMissionRefreshId: null,
         };
 
         this.handleAddMission = this.handleAddMission.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
+        this.handleAddMissionOpen = this.handleAddMissionOpen.bind(this);
+        this.handleAddMissionClose = this.handleAddMissionClose.bind(this);
+        this.handleEditMissionOpen = this.handleEditMissionOpen.bind(this);
+        this.handleEditMissionClose = this.handleEditMissionClose.bind(this);
+        this.handleEditMission = this.handleEditMission.bind(this);
     }
 
-    handleAddMission(title, description) {
-        const mission = {title, description};
+    handleAddMission(mission) {
         addMission(mission).then(() =>
             this.props.refreshComponent(this.refreshIds.waiting));
-        this.handleClose();
+        this.handleAddMissionClose();
     }
 
-    handleMissionClick() {
-
+    handleEditMission(mission) {
+        const {editMissionRefreshId, editMissionId} = this.state;
+        editMission(editMissionId, {
+                title: mission.title,
+                description: mission.description
+            }
+        ).then(
+            () => this.props.refreshComponent(editMissionRefreshId)
+        );
+        this.handleEditMissionClose();
     }
 
-    handleOpen() {
-        this.setState({open: true});
+    handleAddMissionOpen() {
+        this.setState({addDialogOpen: true});
     }
 
-    handleClose() {
-        this.setState({open: false});
+    handleAddMissionClose() {
+        this.setState({addDialogOpen: false});
     }
+
+    handleEditMissionOpen(mission, refreshId) {
+        this.setState({
+            editMissionId: mission.id,
+            editMissionRefreshId: refreshId
+        });
+    }
+
+    handleEditMissionClose() {
+        this.setState({editMissionId: null, editMissionRefreshId: null});
+    }
+
 
     render() {
         const {refreshIds} = this;
         return (
             <Fragment>
-                <button data-test-id="add-button" onClick={this.handleOpen}>Add Mission</button>
+                <button data-test-id="add-button" onClick={this.handleAddMissionOpen}>Add Mission</button>
                 <MissionListContainer
+                    onMissionClick={this.handleEditMissionOpen}
                     refreshId={refreshIds.done}
                     statusId={3}
                     statusName='done'
                 />
                 <MissionListContainer
+                    onMissionClick={this.handleEditMissionOpen}
+
                     refreshId={refreshIds.working}
                     statusId={2}
                     statusName='working'
                 />
                 <MissionListContainer
+                    onMissionClick={this.handleEditMissionOpen}
                     refreshId={refreshIds.waiting}
                     statusId={1}
                     statusName='waiting'/>
                 <AddMissionDialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
+                    open={this.state.addDialogOpen}
                     onSubmit={this.handleAddMission}
+                    onClose={this.handleAddMissionClose}
+                />
+                <EditMissionDialogContainer
+                    id={this.state.editMissionId}
+                    open={Boolean(this.state.editMissionId)}
+                    onClose={this.handleEditMissionClose}
+                    onSubmit={this.handleEditMission}
                 />
             </Fragment>
         );

@@ -12,9 +12,7 @@ const refresh = (state = [], action) => {
             ];
         case REFRESH_COMPONENT:
             return state.map(item =>
-                (item.id === action.id)
-                    ? {...item, timestamp: action.timestamp}
-                    : item
+                item.id === action.id ? {...item, timestamp: action.timestamp} : item
             );
         case REFRESH_COMPONENTS:
             return state.map(item => {

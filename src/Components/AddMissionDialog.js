@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import {reduxForm, Field} from 'redux-form';
 import {Dialog, DialogTitle, DialogActions, DialogContent, Button, TextField} from '@material-ui/core';
 import {Zoom} from '@material-ui/core'
-import * as ReactDOM from "react-dom";
-import DialogForm from "../common/Dialog/DialogForm";
 
 const propTypes = {
     // onClose: PropTypes.func.isRequired,
@@ -28,7 +26,7 @@ const renderTextField = ({
                              meta: {touched, error},
                              ...custom
                          }) => {
-
+    console.log('render');
     return <TextField
         label={label}
         error={touched && Boolean(error)}

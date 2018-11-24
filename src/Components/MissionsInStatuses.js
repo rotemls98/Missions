@@ -5,9 +5,7 @@ import uuidv4 from 'uuid';
 import {refreshComponent} from "../actions/actions";
 import {addMission, editMission} from "../Manager/MissionManager";
 import AddMissionDialog from "./AddMissionDialog";
-import DialogForm from "../common/Dialog/DialogForm";
 import EditMissionDialogContainer from "./EditMissionDialogContainer";
-import EditMissionDialog from "./EditMissionDialog";
 
 class MissionsInStatuses extends Component {
     constructor(props) {

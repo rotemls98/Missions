@@ -34,7 +34,7 @@ class EditMissionDialogContainer extends Component {
 
     render() {
         return (
-            <EditMissionDialog {...this.props} onExited={this.resetInitialValues} initialValues={{...this.state}}/>
+            <EditMissionDialog {...this.props} onExited={this.resetInitialValues} initialValues={this.state}/>
         );
     }
 }
